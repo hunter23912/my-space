@@ -2,7 +2,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import NavBar from "./components/NavBar.vue";
-import Home from "./views/Home.vue";
 </script>
 
 <template>

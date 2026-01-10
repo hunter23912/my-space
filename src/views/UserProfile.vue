@@ -3,7 +3,7 @@ import Content from "../components/Content.vue";
 import UserProfileInfo from "../components/UserProfileInfo.vue";
 import UserProfilePosts from "../components/UserProfilePosts.vue";
 import UserProfileWrite from "../components/UserProfileWrite.vue";
-
+import { useRoute } from "vue-router";
 import { reactive } from "vue";
 
 const user = reactive({
@@ -14,6 +14,11 @@ const user = reactive({
   followerCount: 66,
   is_followed: false,
 });
+
+const route = useRoute();
+const userId = route.params.userId;
+
+console.log(route.params.userId);
 
 // 当posts变化时，涉及到的组件会自动更新
 const posts = reactive({
