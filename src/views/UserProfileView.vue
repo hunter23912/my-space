@@ -80,6 +80,11 @@ const post_file = (content: string) => {
   });
 };
 
+const delete_post = (post_id) => {
+  posts.posts = posts.posts.filter((post) => post.id !== post_id);
+  posts.count--;
+};
+
 const is_me = computed(() => userId === userStore.id);
 </script>
 
@@ -91,7 +96,7 @@ const is_me = computed(() => userId === userStore.id);
         <UserProfileWrite v-if="is_me" @post_file="post_file" />
       </div>
       <div class="col-9">
-        <UserProfilePosts :posts="posts" />
+        <UserProfilePosts :posts="posts" :user="user" @delete_post="delete_post" />
       </div>
     </div>
   </Content>
