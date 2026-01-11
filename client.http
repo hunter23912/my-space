@@ -1,0 +1,8 @@
+# 获取token，只能作测试接口，无法完全模拟代理效果
+POST https://app165.acapp.acwing.com.cn/api/token/
+Content-Type: application/json
+
+{
+    "username": "123",
+    "password": "123"
+}

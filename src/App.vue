@@ -2,11 +2,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import NavBar from "./components/NavBar.vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 </script>
 
 <template>
   <NavBar />
-  <router-view />
+  <router-view :key="route.fullPath" />
 </template>
 
 <style scoped>

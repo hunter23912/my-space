@@ -1,3 +1,13 @@
+<script setup>
+import { useUserStore } from "../store/user";
+
+const user = useUserStore();
+
+const logout = () => {
+  user.logout();
+};
+</script>
+
 <template>
   <nav class="navbar navbar-expand-md bg-body-tertiary">
     <div class="container">
@@ -21,11 +31,8 @@
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'userlist' }">好友列表</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'userprofile', params: { userId: 2 } }">用户动态</router-link>
-          </li>
         </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav" v-if="!user.is_login">
           <li class="nav-item">
             <router-link class="nav-link" :to="{ name: 'login' }">登录</router-link>
           </li>
@@ -33,15 +40,19 @@
             <router-link class="nav-link" :to="{ name: 'register' }">注册</router-link>
           </li>
         </ul>
+        <ul class="navbar-nav" v-else>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'userprofile', params: { userId: user.id } }">{{
+              user.username
+            }}</router-link>
+          </li>
+          <li class="nav-item">
+            <a @click="logout" class="nav-link" style="cursor: pointer">退出</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 </template>
-
-<script>
-export default {
-  name: "NavBar",
-};
-</script>
 
 <style scoped></style>

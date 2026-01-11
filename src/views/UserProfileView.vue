@@ -5,42 +5,53 @@ import UserProfilePosts from "../components/UserProfilePosts.vue";
 import UserProfileWrite from "../components/UserProfileWrite.vue";
 import { useRoute } from "vue-router";
 import { reactive } from "vue";
+import axios from "axios";
+import { useUserStore } from "../store/user";
+import { computed } from "vue";
 
-const user = reactive({
-  id: 1,
-  username: "yanxuecan",
-  lastName: "yan",
-  firstName: "xuecan",
-  followerCount: 66,
-  is_followed: false,
-});
-
+const userStore = useUserStore();
 const route = useRoute();
-const userId = route.params.userId;
-
-console.log(route.params.userId);
-
-// 当posts变化时，涉及到的组件会自动更新
+const userId = parseInt(route.params.userId);
+const user = reactive({});
 const posts = reactive({
-  count: 3,
-  posts: [
-    {
-      id: 1,
-      userId: 1,
-      content: "这是我的第一条动态！",
-    },
-    {
-      id: 2,
-      userId: 1,
-      content: "这是我的第二条动态！",
-    },
-    {
-      id: 3,
-      userId: 1,
-      content: "这是我的第三条动态！",
-    },
-  ],
+  count: 0,
+  posts: [],
 });
+
+axios
+  .get("https://app165.acapp.acwing.com.cn/myspace/getinfo/", {
+    params: {
+      user_id: userId,
+    },
+    headers: {
+      Authorization: `Bearer ${userStore.access}`,
+    },
+  })
+  .then((resp) => {
+    const data = resp.data;
+
+    user.id = data.id;
+    user.username = data.username;
+    user.photo = data.photo;
+    user.followerCount = data.followerCount;
+    user.is_followed = data.is_followed;
+  });
+
+// 获取用户帖子
+axios
+  .get("https://app165.acapp.acwing.com.cn/myspace/post/", {
+    params: {
+      user_id: userId,
+    },
+    headers: {
+      Authorization: `Bearer ${userStore.access}`,
+    },
+  })
+  .then((resp) => {
+    const data = resp.data;
+    posts.count = data.length;
+    posts.posts = data;
+  });
 
 const follow = () => {
   if (user.is_followed) {
@@ -68,6 +79,8 @@ const post_file = (content: string) => {
     content: content,
   });
 };
+
+const is_me = computed(() => userId === userStore.id);
 </script>
 
 <template>
@@ -75,7 +88,7 @@ const post_file = (content: string) => {
     <div class="row">
       <div class="col-3">
         <UserProfileInfo @father_follow="follow" @father_unfollow="unfollow" :user="user" />
-        <UserProfileWrite @post_file="post_file" />
+        <UserProfileWrite v-if="is_me" @post_file="post_file" />
       </div>
       <div class="col-9">
         <UserProfilePosts :posts="posts" />

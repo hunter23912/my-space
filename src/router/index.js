@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
-import UserProfile from "../views/UserProfile.vue";
-import UserList from "../views/UserList.vue";
-import Register from "../views/Register.vue";
-import Login from "../views/Login.vue";
-import NotFound from "../views/NotFound.vue";
+import HomeView from "../views/HomeView.vue";
+import UserProfileView from "../views/UserProfileView.vue";
+import UserListView from "../views/UserListView.vue";
+import RegisterView from "../views/RegisterView.vue";
+import LoginView from "../views/LoginView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 
 const routes = [
-  { path: "/", name: "home", component: Home },
-  { path: "/userlist/", name: "userlist", component: UserList },
-  { path: "/userprofile/:userId/", name: "userprofile", component: UserProfile },
-  { path: "/register/", name: "register", component: Register },
-  { path: "/login/", name: "login", component: Login },
-  { path: "/404/", name: "404", component: NotFound },
+  { path: "/", name: "home", component: HomeView },
+  { path: "/userlist/", name: "userlist", component: UserListView },
+  { path: "/userprofile/:userId/", name: "userprofile", component: UserProfileView },
+  { path: "/register/", name: "register", component: RegisterView },
+  { path: "/login/", name: "login", component: LoginView },
+  { path: "/404/", name: "404", component: NotFoundView },
   { path: "/:catchAll(.*)", redirect: "/404/" },
 ];
 
