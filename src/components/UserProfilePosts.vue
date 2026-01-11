@@ -8,9 +8,11 @@ const userStore = useUserStore();
 let is_me = computed(() => userStore.id === props.user.id); //script中必须加props前缀
 
 const emit = defineEmits(["delete_post"]);
+
 const delete_post = (post_id) => {
-  const form = new URLSearchParams();
-  form.append("post_id", post_id);
+  const form = new URLSearchParams({
+    post_id: post_id,
+  });
   axios
     .delete("https://app165.acapp.acwing.com.cn/myspace/post/", {
       data: form,

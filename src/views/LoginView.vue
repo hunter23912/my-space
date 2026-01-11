@@ -4,17 +4,18 @@ import { ref } from "vue";
 import { useUserStore } from "../store/user";
 import router from "../router/index";
 
-const store = useUserStore();
+const userStore = useUserStore();
 let username = ref("");
 let password = ref("");
 let error_message = ref("");
 
 const login = () => {
   error_message.value = "";
-  store.login({
+  userStore.login({
     username: username.value,
     password: password.value,
 
+    // 两个回调函数
     success() {
       router.push({ name: "userlist" });
     },

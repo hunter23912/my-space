@@ -1,10 +1,19 @@
 <script setup>
 import { useUserStore } from "../store/user";
+import router from "../router/index";
 
 const user = useUserStore();
 
 const logout = () => {
   user.logout();
+};
+
+const ClickUserList = () => {
+  if (user.is_login) {
+    router.push({ name: "userlist" });
+  } else {
+    router.push({ name: "login" });
+  }
 };
 </script>
 
@@ -29,7 +38,7 @@ const logout = () => {
             <router-link class="nav-link active" aria-current="page" :to="{ name: 'home' }">首页</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'userlist' }">好友列表</router-link>
+            <a class="nav-link" style="cursor: pointer" @click.prevent="ClickUserList">好友列表</a>
           </li>
         </ul>
         <ul class="navbar-nav" v-if="!user.is_login">

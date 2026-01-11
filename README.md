@@ -57,3 +57,37 @@ export default defineConfig({
 ```
 
 注意，需要修改`changeOrigin: true`才行，否则会出现 500 错误
+
+- `axios` 的 `delete` 方法只支持两个参数 `url` 和 `config`，请求体要放入 `config.data` 中
+
+```js
+axios.delete("https://app165.acapp.acwing.com.cn/myspace/post/", {
+  data: form,
+  headers: {
+    Authorization: `Bearer ${userStore.access}`,
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+});
+```
+
+- 一般的`post`建议`form`和`config`分开
+
+```js
+axios.post("https://app165.acapp.acwing.com.cn/myspace/post/", form, {
+  headers: {
+    Authorization: `Bearer ${userStore.access}`,
+  },
+});
+```
+
+- `axios`的`post`方法，固定三个参数`(url, body, config)`，所以第二个默认是`body`，
+
+## 部署方式
+
+```shell
+pnpm build
+
+# npm run build
+```
+
+打包后会生成`dist/`目录，里面就是可部署的静态文件

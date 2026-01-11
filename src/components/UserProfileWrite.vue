@@ -10,13 +10,13 @@ const emit = defineEmits(["post_file"]);
 
 const post_file = () => {
   // 表单问题！！！后端默认只支持表单格式
-  const form = new URLSearchParams();
-  form.append("content", content.value);
+  const form = new URLSearchParams({
+    content: content.value,
+  });
   axios
     .post("https://app165.acapp.acwing.com.cn/myspace/post/", form, {
       headers: {
         Authorization: `Bearer ${userStore.access}`,
-        "Content-Type": "application/x-www-form-urlencoded",
       },
     })
     .then((resp) => {

@@ -92,7 +92,7 @@ const is_me = computed(() => userId === userStore.id);
   <Content>
     <div class="row">
       <div class="col-3">
-        <UserProfileInfo @father_follow="follow" @father_unfollow="unfollow" :user="user" />
+        <UserProfileInfo @follow="follow" @unfollow="unfollow" :user="user" />
         <UserProfileWrite v-if="is_me" @post_file="post_file" />
       </div>
       <div class="col-9">

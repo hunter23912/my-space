@@ -15,11 +15,11 @@ export const useUserStore = defineStore("user", {
   getters: {},
   actions: {
     login(data) {
-      const remote_api = "https://app165.acapp.acwing.com.cn/";
+      const remote_api = "https://app165.acapp.acwing.com.cn/api/token/";
       // const proxy_api = "/api/token/";
 
       axios
-        .post(`${remote_api}api/token/`, {
+        .post("https://app165.acapp.acwing.com.cn/api/token/", {
           username: data.username,
           password: data.password,
         })
@@ -28,12 +28,15 @@ export const useUserStore = defineStore("user", {
           const access_obj = jwtDecode(access);
 
           setInterval(() => {
+            const form = new URLSearchParams({
+              refresh: this.refresh,
+            });
             axios
-              .post(`${remote_api}api/token/refresh/`, {
-                refresh: this.refresh,
-              })
+              .post("https://app165.acapp.acwing.com.cn/api/token/refresh/", form)
               .then((resp) => {
-                this.access = resp.data.access;
+                resp = resp.data;
+                this.access = resp.access;
+                console.log("刷新 access 成功", this.access);
               })
               .catch((err) => {
                 console.log("刷新 access 失败: ", err);
@@ -58,8 +61,9 @@ export const useUserStore = defineStore("user", {
               console.log("获取用户信息失败: ", err);
             });
         })
-        .catch(() => {
-          data.error();
+        .catch((e) => {
+          data.error(); // 测试回调函数
+          console.log("登录失败: ", e);
         });
     },
     setUser(info, access, refresh) {

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
+import { useUserStore } from "../store/user";
+import axios from "axios";
 
 const props = defineProps({
   user: {
@@ -7,13 +9,44 @@ const props = defineProps({
     required: true,
   },
 });
+const userStore = useUserStore();
+const emit = defineEmits(["follow", "unfollow"]);
 
-const emit = defineEmits(["father_follow", "father_unfollow"]);
 const follow = () => {
-  emit("father_follow");
+  const form = new URLSearchParams({
+    target_id: props.user.id,
+  });
+  axios
+    .post("https://app165.acapp.acwing.com.cn/myspace/follow/", form, {
+      headers: {
+        Authorization: `Bearer ${userStore.access}`,
+      },
+    })
+    .then((resp) => {
+      resp = resp.data;
+      // 只有后端成功了，才传递事件，更新前端关注数
+      if (resp.result === "success") {
+        emit("follow");
+      }
+    });
 };
+
 const unfollow = () => {
-  emit("father_unfollow");
+  const form = new URLSearchParams({
+    target_id: props.user.id,
+  });
+  axios
+    .post("https://app165.acapp.acwing.com.cn/myspace/follow/", form, {
+      headers: {
+        Authorization: `Bearer ${userStore.access}`,
+      },
+    })
+    .then((resp) => {
+      resp = resp.data;
+      if (resp.result === "success") {
+        emit("unfollow");
+      }
+    });
 };
 
 const local_img = "https://pic1.zhimg.com/80/v2-7bf11332cdf96915e567556c804aa712_720w.webp";
